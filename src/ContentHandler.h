@@ -1,5 +1,5 @@
-#ifndef HEADERHANDLER_H
-#define HEADERHANDLER_H
+#ifndef CONTENTHANDLER_H
+#define CONTENTHANDLER_H
 #include "Common.h"
 
 /*
@@ -21,7 +21,8 @@
 //string protocols[PROTOCOL_NUMS] = {"HTTP/1.0", "HTTP/1.1", "HTTP/2.0"};
 
 
-void get_request(string line);
+string read_request(string line);
 string generate_response_header();
 void get_request_header(string request);
+string get_main_content(string path);
 #endif

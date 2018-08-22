@@ -24,18 +24,20 @@
 #include <unistd.h>
 #include <errno.h>
 
-#include "HeaderHandler.h"
+#include "ContentHandler.h"
 void *handle_client(void *clientfd_p){
-    printf("Client Handler started");
+    printf("Client Handler started\n");
     int client_fd = *((int *)clientfd_p);
     char buff[1024];
     int buff_size;
     int send_bytes;
+    string path;
     memset(buff, 0, sizeof(buff));
     while((buff_size = recv(client_fd, &buff, sizeof(buff), MSG_DONTWAIT)) > 0){
         buff[buff_size] = '\0';
-        get_request(buff);
-        printf("Data received");
+        path = read_request(buff);
+        printf("Path asked: %s\n", path);
+        printf("\nAll Data received\n");
     }
     if (buff_size < 0){
         if (errno == EAGAIN || errno == EWOULDBLOCK){
@@ -44,7 +46,7 @@ void *handle_client(void *clientfd_p){
         else
             perror("Receive error");
     }
-    string response = generate_response_header();
+    string response = get_main_content(path);
     size_t response_size = strlen(response);
     send_bytes = send(client_fd, response, ++response_size, 0);
     if (send_bytes < 0){

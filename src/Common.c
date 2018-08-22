@@ -35,6 +35,30 @@ string copy(string src){
 }
 
 
+string concat(string src1, string src2){
+    size_t src1_size = strlen(src1);
+    size_t src2_size = strlen(src2);
+    if ((src1_size * src2_size) < 0){
+        perror("Wrong string size in concat\n");
+        return NULL;
+    }
+    size_t src_size = src1_size + src2_size + 1;
+    string dest = (string) malloc(src_size);
+
+    if (dest == NULL){
+        perror("Could not allocate memory for concat");
+        exit(EXIT_FAILURE);
+    }
+    for (int i = 0; i <src1_size; i++){
+        dest[i] = src1[i];
+    }
+    for (int i = src1_size; i < src_size; i++){
+        dest[i] = src2[i - src1_size];
+    }
+    dest[src_size] = '\0';
+    return dest;
+}
+
 void rc_check(int rc){
     if (rc != 0){
         fprintf(stderr, "Error: %s\n", strerror(rc));

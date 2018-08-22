@@ -30,6 +30,7 @@ typedef struct list{
 }list;
 
 string copy(string src);
+string concat(string src1, string src2);
 
 void rc_check(int rc);
 
